@@ -131,6 +131,12 @@ sub parse_from_string {
     return $output;
 }
 
+# this/these are methods that Pod::PlainText used to implement, but no long does
+
+sub cmd_method { my $self = shift; $self->item(@_); }    # 'cmd_' . $pod_node_name is a computed method name; handle =method entires the same way as =item entries
+
+# done
+
 1;
 
 =head1 SYNOPSIS
