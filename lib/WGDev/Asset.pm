@@ -66,13 +66,26 @@ sub find {
     my $asset;
     my $e;
     if ( $session->id->valid($asset_spec) ) {
-            try { $asset = $self->by_id($asset_spec); };
+        try {
+            $asset = $self->by_id($asset_spec);
+        }
+        catch {
+            $e = $_;
+        };
     }
     if ( !$asset ) {
+        try {
             $asset = WebGUI::Asset->newByUrl( $session, $asset_spec );
+        }
+        catch {
+            $e ||= $_;
+        };
     }
     if ( $asset && ref $asset && $asset->isa('WebGUI::Asset') ) {
         return $asset;
+    }
+    if ($e) {
+        WGDev::X->inflate($e);
     }
     WGDev::X::AssetNotFound->throw( asset => $asset_spec );
 }

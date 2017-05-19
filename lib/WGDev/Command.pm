@@ -330,7 +330,7 @@ sub command_list {
         $package =~ s/\Q.pm\E$//msx;
         $package = join q{::}, File::Spec->splitdir($package);
         ##no critic (RequireCheckingReturnValueOfEval)
-        do {
+        eval {
             require $module;
             if ( $package->can('run')
                 && $package->can('is_runnable')
